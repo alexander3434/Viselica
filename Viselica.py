@@ -40,10 +40,13 @@ faq = '''Привет, игрок! Давай поиграем!
 слово, он выигрывает.'''
 canvas.create_text(600, 300, text=faq, fill="white", font=("Helvetica", "16"))
 slova = list()
-f = open('slova.txt', 'r')
+try:
+    print("Opening file ...")
+    f = open('slova.txt', 'r')
+except:
+    print("File not found!")
 for line in f:
     slova.append(line.strip("\n\r\t"))
-
 
 def letterCoordinates(letterNumber):
     x1, y1 = 282 + (32 * letterNumber), 40
