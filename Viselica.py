@@ -91,7 +91,7 @@ def arr():
 
             if len(win) == length - 2:
                 canvas.create_text(150, 400, text="Ты победил", fill="green", font=("Helvetica", "34"))
-                saveRecord("Pasha", True)
+                saveRecord("Sasha", True)
                 for i in alphabet:
                     letterButtons[i]["state"] = "disabled"
         else:
