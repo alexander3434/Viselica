@@ -1,4 +1,6 @@
+import os
 from tkinter import *
+import os
 import random
 root = Tk()
 root.title("Виселица")
@@ -42,7 +44,7 @@ canvas.create_text(600, 300, text=faq, fill="white", font=("Helvetica", "16"))
 slova = list()
 try:
     print("Opening file ...")
-    f = open('slova.txt', 'r')
+    f = open('slovaa.txt', 'r')
 except:
     print("File not found!")
 for line in f:
@@ -89,6 +91,7 @@ def arr():
 
             if len(win) == length - 2:
                 canvas.create_text(150, 400, text="Ты победил", fill="green", font=("Helvetica", "34"))
+                saveRecord("Pasha", True)
                 for i in alphabet:
                     letterButtons[i]["state"] = "disabled"
         else:
@@ -118,9 +121,47 @@ def arr():
         letterButtons[u] = Button(gridCanvas, text=u, width=3, height=1, command=lambda: chooseLetter(u))
         letterButtons[u].grid(row=row, column=column)
 
+    def saveRecord(name, result):
+        recordsList = open('records.txt', 'r')
+        resultRecordsList = []
+        flag = 0
+        while True:
+            user = recordsList.readline()
+            if not user:
+                break
+            print(user)
+            splitUser = user.split(" ")
+            print(splitUser)
+            currentUserName = splitUser[0]
+            currentUserResult = int(splitUser[1])
+
+            if currentUserName == name:
+                if result:
+                    currentUserResult += 1
+                    resultUser = currentUserName + " " + str(currentUserResult)
+                else:
+                    currentUserResult -= 1
+                    resultUser = currentUserName + " " + str(currentUserResult)
+
+                resultRecordsList.append(resultUser + "\n")
+                flag = 1
+
+        if flag == 0:
+            recordsList = str(recordsList) + "\n" + name + str(result)
+            with open('records.txt', 'w') as recordsFile:
+                recordsFile.write("\n".join(map(str, recordsList)))
+        else:
+            with open('records.txt', 'w') as recordsFile:
+                recordsFile.write("\n".join(map(str, resultRecordsList)))
+
+
+    translation = str.maketrans(dict(zip("йцукеёнгшщзхъфывапролджэ\\ячсмитьбю", "qwerty§uiop[]asdfghjkl;'\\zxcvbnm,.")))
+    def add_shortcut(u):
+        root.bind((u.translate(translation)), lambda event: chooseLetter(u))
+
     for i in range(len(alphabet)):
         gen(alphabet[i], i // 8, i % 8)
-
+        add_shortcut(alphabet[i])
 
     def golova():
         canvas.create_oval(79, 59, 120, 80, width=4, fill='blue')
@@ -149,6 +190,7 @@ def arr():
 
     def end():
         canvas.create_text(150, 400, text="Ты проиграл", fill="red", font=("Helvetica", "34"))
+        saveRecord("Sasha", False)
         for i in alphabet:
             letterButtons[i]["state"] = "disabled"
 
