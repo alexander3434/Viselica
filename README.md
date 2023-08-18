@@ -1,2 +1,2 @@
 # Viselica
-game viselica on Phyton
+game viselica on Python
